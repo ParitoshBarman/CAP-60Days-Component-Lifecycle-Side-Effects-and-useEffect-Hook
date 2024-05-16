@@ -1,1 +1,60 @@
-test
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React useEffect Cleanup Example</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Subscribing to a Timer
+    function TimerComponent() {
+      React.useEffect(() => {
+        const timerId = setTimeout(() => {
+          console.log('Timer callback');
+        }, 3000);
+
+        return () => {
+          clearTimeout(timerId);
+          console.log('Timer cleared');
+        };
+      }, []);
+
+      return <div>Timer Component</div>;
+    }
+
+    // Subscribing to a Document Event
+    function ScrollEventComponent() {
+      React.useEffect(() => {
+        const handleScroll = () => {
+          console.log('Scroll event');
+        };
+
+        document.addEventListener('scroll', handleScroll);
+
+        return () => {
+          document.removeEventListener('scroll', handleScroll);
+          console.log('Scroll event listener removed');
+        };
+      }, []);
+
+      return <div>Scroll Event Component</div>;
+    }
+
+    // Render components
+    ReactDOM.render(
+      <div>
+        <TimerComponent />
+        <ScrollEventComponent />
+      </div>,
+      document.getElementById('root')
+    );
+  </script>
+</body>
+</html>
